@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TemplateManager from '../../TemplateManager';
 
-describe('Juanpablo - KAN-85 (US_13_M06) - Envío Automático de Notificación al Administrador', () => {
+describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Administrador', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });

@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TemplateManager from '../../TemplateManager';
 
-describe('Julian - KAN-33 (US_02_M04) - Selección Única de Evento', () => {
+describe('Julian - US_02_M04 - Selección Única de Evento', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
