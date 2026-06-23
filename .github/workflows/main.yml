@@ -1,0 +1,61 @@
+name: AgendaYA - Pipeline Avanzado de Integración Continua
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  calidad-y-pruebas:
+    name: Calidad de Código y Pruebas Unitarias
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js (v20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias (Instalación Limpia)
+        run: npm ci
+
+      - name: Analizador estático (ESLint)
+        run: npm run lint
+
+      - name: Ejecutar Pruebas Unitarias (Jest)
+        run: npm test
+
+  compilacion:
+    name: Compilación Next.js (Build)
+    needs: calidad-y-pruebas 
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js (v20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir la aplicación para Producción
+        run: npm run build
