@@ -12,7 +12,8 @@
   "dependencies": {
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
