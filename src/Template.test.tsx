@@ -195,7 +195,7 @@ describe('KAN-85 (US_13_M06) - Envío Automático de Notificación al Administra
 
       const successMessage = screen.getByText(/Notificación enviada/i);
       expect(successMessage).toBeInTheDocument();
-      expect(successMessage).toHaveStyle({ color: 'green' });
+      expect(successMessage).toHaveStyle({ color: 'rgb(0, 128, 0)' });
     });
   });
 
@@ -219,7 +219,7 @@ describe('KAN-85 (US_13_M06) - Envío Automático de Notificación al Administra
 
       const errorMessage = screen.getByText(/Error en el envío de notificación/i);
       expect(errorMessage).toBeInTheDocument();
-      expect(errorMessage).toHaveStyle({ color: 'red' });
+      expect(errorMessage).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
   });
 
@@ -242,7 +242,7 @@ describe('KAN-85 (US_13_M06) - Envío Automático de Notificación al Administra
 
       const errorMessage = screen.getByText(/Error en el envío de notificación/i);
       expect(errorMessage).toBeInTheDocument();
-      expect(errorMessage).toHaveStyle({ color: 'red' });
+      expect(errorMessage).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
   });
 
