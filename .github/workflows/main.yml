@@ -17,7 +17,7 @@ jobs:
     steps:
     - name: Obtener-Codigo
       uses: actions/checkout@v4
-    - name: COnfigurar-Node(V22)
+    - name: Configurar-Node(V22)
       uses: actions/setup-node@v4
       with:
         node-version: 22
