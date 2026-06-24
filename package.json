@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "eslint",
     "test": "jest"
   },
   "dependencies": {
@@ -14,14 +15,14 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-config-next": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "latest",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^29.0.0",
     "ts-node": "^10.9.2"
