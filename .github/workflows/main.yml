@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependencias (Instalación Limpia)
-        run: npm install
+        run: npm ci
 
       - name: Analizador estático (ESLint)
         run: npm run lint
@@ -55,7 +55,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependencias
-        run: npm install
+        run: npm ci
 
       - name: Construir la aplicación para Producción
         run: npm run build
