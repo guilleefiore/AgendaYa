@@ -18,14 +18,14 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
       <TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />
     );
 
-    const btnEventoA = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento A');
-    fireEvent.click(btnEventoA!);
+    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
+    fireEvent.click(btnEventoA);
     expect(mockEventSelect).toHaveBeenCalledWith('evento-a');
 
     rerender(<TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />);
 
-    const btnEventoB = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento B');
-    fireEvent.click(btnEventoB!);
+    const btnEventoB = screen.getByRole('button', { name: 'Evento B' });
+    fireEvent.click(btnEventoB);
 
     expect(mockEventSelect).toHaveBeenCalledWith('evento-b');
     expect(mockEventSelect).toHaveBeenCalledTimes(2);
@@ -37,7 +37,7 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
     const btnContinuar = screen.getByRole('button', { name: /Continuar al calendario/i });
     expect(btnContinuar).toBeDisabled();
 
-    fireEvent.click(screen.getAllByRole('button').find(btn => btn.textContent === 'Evento A')!);
+    fireEvent.click(screen.getByRole('button', { name: 'Evento A' }));
 
     expect(btnContinuar).not.toBeDisabled();
   });
@@ -52,8 +52,8 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
       />
     );
 
-    const btnEventoA = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento A');
-    fireEvent.click(btnEventoA!);
+    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
+    fireEvent.click(btnEventoA);
 
     expect(btnEventoA).toHaveClass('evento-selected');
     expect(btnEventoA).toHaveStyle({ backgroundColor: '#4CAF50' });
