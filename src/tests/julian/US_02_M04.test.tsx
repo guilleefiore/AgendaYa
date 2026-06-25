@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
 import TemplateManager from '../../TemplateManager';
 
 describe('Julian - US_02_M04 - Selección Única de Evento', () => {
@@ -18,8 +18,8 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
       <TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />
     );
 
-    const btnEventoA = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento A');
-    fireEvent.click(btnEventoA!);
+    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
+    fireEvent.click(btnEventoA);
     expect(mockEventSelect).toHaveBeenCalledWith('evento-a');
 
     rerender(<TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />);
@@ -37,7 +37,8 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
     const btnContinuar = screen.getByRole('button', { name: /Continuar al calendario/i });
     expect(btnContinuar).toBeDisabled();
 
-    fireEvent.click(screen.getAllByRole('button').find(btn => btn.textContent === 'Evento A')!);
+    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
+    fireEvent.click(btnEventoA);
 
     expect(btnContinuar).not.toBeDisabled();
   });
@@ -52,8 +53,8 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
       />
     );
 
-    const btnEventoA = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento A');
-    fireEvent.click(btnEventoA!);
+    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
+    fireEvent.click(btnEventoA);
 
     expect(btnEventoA).toHaveClass('evento-selected');
     expect(btnEventoA).toHaveStyle({ backgroundColor: '#4CAF50' });
