@@ -1,5 +1,5 @@
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
 import TemplateManager from '../../TemplateManager';
 
 describe('Julian - US_02_M04 - Selección Única de Evento', () => {
@@ -24,8 +24,8 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
 
     rerender(<TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />);
 
-    const btnEventoB = screen.getAllByRole('button').find((btn: HTMLElement) => btn.textContent === 'Evento B');
-    fireEvent.click(btnEventoB!);
+    const btnEventoB = screen.getByRole('button', { name: 'Evento B' });
+    fireEvent.click(btnEventoB);
 
     expect(mockEventSelect).toHaveBeenCalledWith('evento-b');
     expect(mockEventSelect).toHaveBeenCalledTimes(2);
@@ -37,8 +37,7 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
     const btnContinuar = screen.getByRole('button', { name: /Continuar al calendario/i });
     expect(btnContinuar).toBeDisabled();
 
-    const btnEventoA = screen.getByRole('button', { name: 'Evento A' });
-    fireEvent.click(btnEventoA);
+    fireEvent.click(screen.getByRole('button', { name: 'Evento A' }));
 
     expect(btnContinuar).not.toBeDisabled();
   });
