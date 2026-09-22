@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "next": "latest",
+    "next": "^16.3.6",
     "react": "latest",
     "react-dom": "latest"
   },

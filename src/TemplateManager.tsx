@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { copiarTextoPlantilla, obtenerErroresFormularioPlantilla } from './tests/camila/logic';
 import { validarFormatoEmailReserva } from './tests/francisco/logic';
 import { crearDatosNotificacionAutomatica, esEmailAdministradorValido } from './tests/juanpablo/logic';
-import { actualizarSeleccionEvento, esEventoSeleccionado } from './tests/julian/logic';
+import {
+  actualizarSeleccionEvento,
+  esEventoSeleccionado,
+  filterDaysByDuration,
+} from './tests/julian/logic';
 
 interface NotificationSettings {
   adminEmail: string;
@@ -39,6 +43,14 @@ export default function TemplateManager({
 
   // Estados para KAN-85: Notificación al administrador
   const [notificationStatus, setNotificationStatus] = useState<string | null>(null);
+  const [durationMinutes, setDurationMinutes] = useState(60);
+
+  const availability = [
+    { date: '2026-06-25', freeIntervals: [{ start: '09:00', end: '10:00' }] },
+    { date: '2026-06-26', freeIntervals: [{ start: '09:00', end: '09:30' }] },
+    { date: '2026-06-27', freeIntervals: [{ start: '10:00', end: '11:30' }] },
+  ];
+  const availableDays = filterDaysByDuration(availability, durationMinutes);
 
   // Lógica para el botón Guardar (Prueba 1)
   const handleGuardar = () => {
@@ -94,6 +106,32 @@ const handleGuestEmailBlur = () => {
 
   return (
     <div>
+      <div style={{ marginTop: '20px' }}>
+        <h3>Disponibilidad</h3>
+        <label htmlFor="duration-selector">Duración</label>
+        <select
+          id="duration-selector"
+          data-cy="duration-selector"
+          value={durationMinutes}
+          onChange={(event) => setDurationMinutes(Number(event.target.value))}
+        >
+          <option value="30">30 minutos</option>
+          <option value="60">60 minutos</option>
+          <option value="240">240 minutos</option>
+        </select>
+        <div data-cy="calendar">
+          {availability.map((day) => (
+            <div
+              key={day.date}
+              data-cy={`day-${day.date}`}
+              className={availableDays.includes(day.date) ? '' : 'is-disabled'}
+            >
+              {day.date}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* --- SECCIÓN PRUEBA 1: FORMULARIO --- */}
       <div>
         <input placeholder="Título" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
