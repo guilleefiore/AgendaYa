@@ -75,4 +75,49 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
       expect(errorMessage).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
   });
+
+  it('debe mostrar errores de validación cuando los campos obligatorios están vacíos', async () => {
+    render(<TemplateManager />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Guardar/i }));
+
+    await waitFor(() => {
+      const tituloError = screen.getByText(/El título es obligatorio/i);
+      const categoriaError = screen.getByText(/La categoría es obligatoria/i);
+      const descripcionError = screen.getByText(/La descripción es obligatoria/i);
+
+      expect(tituloError).toBeInTheDocument();
+      expect(categoriaError).toBeInTheDocument();
+      expect(descripcionError).toBeInTheDocument();
+
+      expect(tituloError).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+      expect(categoriaError).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+      expect(descripcionError).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+    });
+  });
+
+  it('debe permitir seleccionar un evento y habilitar el botón continuar', async () => {
+    const mockOnEventSelect = jest.fn();
+
+    render(
+      <TemplateManager
+        eventos={[
+          { id: 'e1', name: 'Evento 1' },
+          { id: 'e2', name: 'Evento 2' },
+        ]}
+        onEventSelect={mockOnEventSelect}
+      />
+    );
+
+    const evento1Btn = screen.getByRole('button', { name: /Evento 1/i });
+
+    fireEvent.click(evento1Btn);
+
+    await waitFor(() => {
+      const continuarBtn = screen.getByRole('button', { name: /Continuar al calendario/i });
+      expect(continuarBtn).toBeEnabled();
+      expect(evento1Btn).toHaveClass('evento-selected');
+      expect(mockOnEventSelect).toHaveBeenCalledWith('e1');
+    });
+  });
 });
