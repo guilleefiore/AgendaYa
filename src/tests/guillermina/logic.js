@@ -2,8 +2,22 @@
 export const MAX_REINTENTOS_NOTIFICACION_AUTOMATICA = 3;
 
 export function determinarEstadoNotificacionAutomatica(input) {
-  // Evita contadores negativos o decimales antes de evaluar el resultado del envío.
-  const reintentosNormalizados = Math.max(0, Math.floor(input.reintentosRealizados));
+  // Evita contadores negativos, decimales o superiores al máximo permitido.
+  const reintentosNormalizados = Math.min(
+    MAX_REINTENTOS_NOTIFICACION_AUTOMATICA,
+    Math.max(0, Math.floor(input.reintentosRealizados)),
+  );
+
+  // Una notificación finalizada conserva su estado aunque se solicite procesarla nuevamente.
+  if (input.estadoActual === 'enviada' || input.estadoActual === 'fallida') {
+    return {
+      nuevoEstado: input.estadoActual,
+      reintentosActualizados: input.estadoActual === 'fallida'
+        ? MAX_REINTENTOS_NOTIFICACION_AUTOMATICA
+        : reintentosNormalizados,
+      informacionError: input.informacionError ?? null,
+    };
+  }
 
   // Un envío exitoso finaliza el proceso sin sumar reintentos ni registrar errores.
   if (input.resultadoEnvio === 'exitoso') {
