@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { procesarNotificacionAutomaticaM06R07F } from '../../src/tests/guillermina/logic';
+import { determinarEstadoNotificacionAutomatica } from '../../src/tests/guillermina/logic';
 import { crearDatosNotificacionAutomatica, esEmailAdministradorValido } from '../../src/tests/juanpablo/logic';
 
 export default function NotificacionesPage() {
@@ -28,7 +28,7 @@ export default function NotificacionesPage() {
       tipoError: 'Timeout API SendGrid'
     };
     
-    const resultado = procesarNotificacionAutomaticaM06R07F(input);
+    const resultado = determinarEstadoNotificacionAutomatica(input);
     
     setLog([{
       input,
