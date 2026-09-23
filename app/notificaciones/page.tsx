@@ -5,10 +5,12 @@ import { crearDatosNotificacionAutomatica, esEmailAdministradorValido } from '..
 
 export default function NotificacionesPage() {
   const [adminEmail, setAdminEmail] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [datosSimulados, setDatosSimulados] = useState<any>(null);
   
   const [resultadoEnvio, setResultadoEnvio] = useState('exitoso');
   const [reintentos, setReintentos] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [log, setLog] = useState<any[]>([]);
 
   const handleSimularNuevaReserva = () => {

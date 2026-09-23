@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const file = 'src/TimezoneBooking.tsx';
 let code = fs.readFileSync(file, 'utf8');

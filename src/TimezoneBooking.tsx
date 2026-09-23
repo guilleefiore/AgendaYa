@@ -36,6 +36,7 @@ export default function TimezoneBooking() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState('');
 
@@ -43,10 +44,14 @@ export default function TimezoneBooking() {
     try {
       const localTz = detectLocalTimezone();
       if (localTz) {
-        setTimezone(localTz);
-        setTzs(prev => prev.includes(localTz) ? prev : [...prev, localTz]);
+        setTimeout(() => {
+          setTimezone(localTz);
+          setTzs(prev => prev.includes(localTz) ? prev : [...prev, localTz]);
+        }, 0);
       }
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
   }, []);
 
   const handleEventSelect = (eventId: string, eventDuration: number) => {
@@ -146,7 +151,7 @@ export default function TimezoneBooking() {
                 let localTime = { date: '', time: '' };
                 try {
                   localTime = convertSlotToLocalTime(utcSlot, timezone);
-                } catch (e) {
+                } catch {
                   return null;
                 }
                 const slotLabel = `${localTime.date} - ${localTime.time}`;

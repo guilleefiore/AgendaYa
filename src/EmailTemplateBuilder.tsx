@@ -16,6 +16,7 @@ export default function EmailTemplateBuilder() {
   const [message, setMessage] = useState('');
   
   const [searchTerm, setSearchTerm] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [errorObj, setErrorObj] = useState<any>({});
   const [varErrors, setVarErrors] = useState<string[]>([]);
   const [preview, setPreview] = useState('');

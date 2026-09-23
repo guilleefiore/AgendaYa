@@ -12,7 +12,7 @@ export async function copiarTextoPlantilla(textoPlantilla) {
   try {
     await navigator.clipboard.writeText(textoPlantilla);
     alert('Copiado en portapapeles SIN INSERCIÓN DE VARIABLES');
-  } catch (error) {
+  } catch {
     alert('Error. No se pudo copiar al portapapeles');
   }
 }
