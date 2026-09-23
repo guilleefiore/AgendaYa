@@ -2,11 +2,13 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TemplateManager from '../../TemplateManager';
 
+
 describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
+  // Test para verificar que los campos obligatorios no estén vacíos en la creación de plantillas
   it('debe impedir el guardado y mostrar error si hay campos obligatorios vacíos', () => {
     render(<TemplateManager />);
 
@@ -18,6 +20,8 @@ describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', ()
     expect(screen.getByText(/La descripción es obligatoria/i)).toBeInTheDocument();
   });
 
+
+  // Test para verificar que el copiado al portapapeles funcione correctamente y muestre confirmación
   it('debe copiar al portapapeles el texto en crudo y mostrar confirmación', async () => {
     render(<TemplateManager textoPlantilla="Hola [Nombre_Cliente]" />);
 
@@ -36,6 +40,7 @@ describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', ()
     });
   });
 
+  // Test para verificar que se maneje correctamente el error al intentar copiar al portapapeles
   it('debe mostrar error exacto si el acceso al portapapeles falla', async () => {
     render(<TemplateManager textoPlantilla="Hola [Nombre_Cliente]" />);
 
