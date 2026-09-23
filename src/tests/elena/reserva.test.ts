@@ -51,4 +51,35 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
     expect(resultado.estado).toBe('rechazado');
     expect(resultado.mailEnviado).toBe(false);
   });
+  // Test 4: Rechazo por formulario incompleto
+  test('No debería confirmar la reserva si el usuario invitado no completó todos los pasos obligatorios', () => {
+    const datosReserva = {
+      pasosCompletados: false,
+      confirmacionAutomatica: true,
+      horarioDisponible: true,
+      canceOption: true,
+      emailInvitado: 'test@usuario.com'
+    };
+
+    const resultado = procesarReservaAutomática(datosReserva);
+
+    expect(resultado.estado).toBe('rechazado');
+    expect(resultado.mailEnviado).toBe(false);
+  });
+
+  // Test 5: Rechazo si el evento no tiene confirmación automática configurada
+  test('No debería confirmar automáticamente si la modalidad de confirmación automática está desactivada', () => {
+    const datosReserva = {
+      pasosCompletados: true,
+      confirmacionAutomatica: false,
+      horarioDisponible: true,
+      canceOption: true,
+      emailInvitado: 'test@usuario.com'
+    };
+
+    const resultado = procesarReservaAutomática(datosReserva);
+
+    expect(resultado.estado).toBe('rechazado');
+    expect(resultado.mailEnviado).toBe(false);
+  });
 });
