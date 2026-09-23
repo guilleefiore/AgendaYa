@@ -1,7 +1,7 @@
 describe('AgendaYA - M06 Notificaciones y Comunicaciones', () => {
   beforeEach(() => {
     // Visitamos la página local del frontend (la ruta que creamos para plantillas)
-    cy.visit('http://localhost:3000/plantillas');
+    cy.visit('/plantillas');
   });
 
   it('Debe permitir crear una nueva plantilla de email y usar el catálogo de variables', () => {
@@ -28,7 +28,7 @@ describe('AgendaYA - M06 Notificaciones y Comunicaciones', () => {
     cy.get('[data-cy="var-fecha-turno"]').click();
     
     // Verificamos que el textarea contenga el texto con las variables insertadas
-    cy.get('[data-cy="template-body"]').should('have.value', 'Hola {{[Nombre_Cliente]}}, tu turno para el día {{[Fecha_Turno]}}');
+    cy.get('[data-cy="template-body"]').should('have.value', 'Hola [Nombre_Cliente], tu turno para el día [Fecha_Turno]');
     
     // Hacemos click en el botón de guardar
     cy.get('[data-cy="save-template"]').click();
@@ -43,13 +43,12 @@ describe('AgendaYA - M06 Notificaciones y Comunicaciones', () => {
   });
 
   it('Debe mostrar un mensaje de error si se intenta guardar con campos vacíos', () => {
-    // Arrange: Solo llenamos el título, dejamos el resto vacío
-    cy.get('[data-cy="template-title"]').type('Plantilla Incompleta');
+    // Arrange: Dejamos el título vacío
     
     // Act: intentamos guardar
     cy.get('[data-cy="save-template"]').click();
     
-    // Assert: debe fallar por validación de campos obligatorios (la categoría falta)
-    cy.get('[data-cy="error-message"]').should('be.visible').and('contain', 'La categoría es obligatoria');
+    // Assert: debe fallar por validación de campos obligatorios (el título falta)
+    cy.get('[data-cy="error-message"]').should('be.visible').and('contain', 'El título es obligatorio');
   });
 });

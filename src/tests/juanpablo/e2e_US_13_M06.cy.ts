@@ -1,21 +1,24 @@
-// Cypress E2E test for AgendaYA - M06 (Notificación al Administrador)
-// Arrange / Act / Assert pattern
-// Nota: Cypress debe estar configurado y el servidor dev corriendo en `http://localhost:3000`.
-
-describe('AgendaYA - M06 - Envío de notificación (E2E)', () => {
+describe('AgendaYA - M06 - Motor de Notificaciones (Juan Pablo & Guillermina)', () => {
   beforeEach(() => {
-    cy.visit('/');
+    // Visitamos la pantalla técnica del motor de notificaciones
+    cy.visit('/notificaciones');
   });
 
-  it('Flujo happy path: completar campos y enviar notificación', () => {
-    // Arrange: verificar que la página cargó
-    cy.contains('Enviar Notificación').should('exist');
+  it('Flujo happy path: detectar reserva, encolar y procesar envío exitoso', () => {
+    // Arrange: Cargar email del admin
+    cy.get('input[type="email"]').type('admin@clinica.com');
 
-    // Act: hacer click en Enviar Notificación (el componente usa valores por defecto)
-    cy.contains('button', 'Enviar Notificación').click();
+    // Act: Simular la recepción de una nueva reserva (Lógica Juan Pablo)
+    cy.contains('button', 'Simular Inserción en Cola').click();
 
-    // Assert: debería aparecer mensaje de éxito y conservarse en la misma ruta
-    cy.contains('Notificación enviada').should('be.visible');
-    cy.url().should('include', '/');
+    // Assert: Aparece la caja con los datos de la notificación
+    cy.contains('admin@clinica.com').should('be.visible');
+
+    // Act 2: Procesar la cola con resultado Exitoso (Lógica Guillermina)
+    cy.get('select').select('exitoso');
+    cy.contains('button', 'Ejecutar Worker (Procesar Mensaje)').click();
+
+    // Assert 2: Ver el log de procesamiento confirmando el éxito
+    cy.contains('Resultado Worker: ENVIADA').should('be.visible');
   });
 });

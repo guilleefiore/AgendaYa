@@ -28,6 +28,7 @@ export default function TimezoneBooking() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [duration, setDuration] = useState(0);
 
+  const [tzs, setTzs] = useState(availableTimezones);
   const [timezone, setTimezone] = useState('UTC');
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   
@@ -43,9 +44,7 @@ export default function TimezoneBooking() {
       const localTz = detectLocalTimezone();
       if (localTz) {
         setTimezone(localTz);
-        if (!availableTimezones.includes(localTz)) {
-          availableTimezones.push(localTz);
-        }
+        setTzs(prev => prev.includes(localTz) ? prev : [...prev, localTz]);
       }
     } catch (e) {}
   }, []);
@@ -132,7 +131,7 @@ export default function TimezoneBooking() {
             onChange={(e) => setTimezone(e.target.value)}
             style={{ width: '100%', padding: '8px', marginBottom: '15px' }}
           >
-            {availableTimezones.map(tz => (
+            {tzs.map(tz => (
               <option key={tz} value={tz}>{tz}</option>
             ))}
           </select>

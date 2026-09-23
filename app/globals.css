@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css");
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,4 +22,50 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #F7F2FA !important;
+  color: #1D1B20 !important;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.text-secondary-ag {
+  color: #49454F !important;
+}
+.card-ag {
+  background-color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-ag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.btn-primary-ag {
+  background-color: #6750A4 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+.btn-primary-ag:hover {
+  background-color: #4F378B !important;
+  color: #FFFFFF !important;
+}
+.btn-secondary-ag {
+  background-color: #E8DEF8 !important;
+  color: #1D1B20 !important;
+  border: none !important;
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+.btn-secondary-ag:hover {
+  background-color: #d0c4e8 !important;
+  color: #1D1B20 !important;
 }
