@@ -121,5 +121,43 @@ describe('Guillermina - US_04_M06, US_05_M06 y US_06_M06', () => {
         },
       });
     });
+
+    // Comprueba que un fallo definitivo no pueda convertirse posteriormente en un envío exitoso.
+    it('si la notificación ya está fallida, un nuevo procesamiento conserva el estado final', () => {
+      const informacionError = {
+        tipoFallo: 'conexion',
+        fecha: '2026-06-23',
+        hora: '10:15:30',
+      };
+
+      const resultado = determinarEstadoNotificacionAutomatica({
+        estadoActual: 'fallida',
+        reintentosRealizados: 3,
+        resultadoEnvio: 'exitoso',
+        informacionError,
+      });
+
+      expect(resultado).toEqual({
+        nuevoEstado: 'fallida',
+        reintentosActualizados: 3,
+        informacionError,
+      });
+    });
+
+    // Comprueba que una notificación enviada tampoco vuelva al circuito de reintentos.
+    it('si la notificación ya está enviada, un fallo posterior no modifica su estado', () => {
+      const resultado = determinarEstadoNotificacionAutomatica({
+        estadoActual: 'enviada',
+        reintentosRealizados: 1,
+        resultadoEnvio: 'fallido',
+        tipoError: 'conexion',
+      });
+
+      expect(resultado).toEqual({
+        nuevoEstado: 'enviada',
+        reintentosActualizados: 1,
+        informacionError: null,
+      });
+    });
   });
 });
