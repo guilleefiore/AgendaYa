@@ -97,7 +97,7 @@ export default function EmailTemplateBuilder() {
       <hr style={{ margin: '20px 0' }}/>
 
       {/* ALTA/EDICIÓN */}
-      <h3 data-cy="template-builder-title">Configurar Nueva Plantilla</h3>
+      <h3 data-cy="template-builder-title">Crear Nueva Plantilla</h3>
       {message && <div data-cy="success-message" style={{ color: 'green', marginBottom: '10px' }}>{message}</div>}
 
       <div style={{ marginBottom: '10px' }}>
