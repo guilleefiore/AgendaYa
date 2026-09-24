@@ -79,19 +79,46 @@ export default function EmailTemplateBuilder() {
       <h2>Gestión de Plantillas (M06)</h2>
       
       {/* BÚSQUEDA (Agustín) */}
+      {/* BÚSQUEDA (Agustín) */}
       <div style={{ padding: '15px', background: '#f5f5f5', marginBottom: '20px', borderRadius: '4px' }}>
         <h3 style={{ marginTop: 0 }}>Listado de Plantillas</h3>
-        <input 
-          placeholder="Buscar por Título o Descripción (Agustín)..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-        />
-        <ul>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+          <input 
+            data-cy="search-template-input"
+            placeholder="Buscar por Título o Descripción (Agustín)..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: '100%', padding: '8px' }}
+          />
+          {searchTerm && (
+            <button
+              data-cy="clear-search-button"
+              type="button"
+              onClick={() => setSearchTerm('')}
+              style={{
+                padding: '8px 12px',
+                background: '#e0e0e0',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Limpiar
+            </button>
+          )}
+        </div>
+        <ul data-cy="template-list" style={{ listStyle: 'none', paddingLeft: 0 }}>
           {filteredTemplates.map(t => (
-            <li key={t.id}><strong>{t.title}</strong> - {t.description} ({t.category})</li>
+            <li key={t.id} data-cy="template-item" style={{ padding: '6px 0', borderBottom: '1px solid #e0e0e0' }}>
+              <strong>{t.title}</strong> - {t.description} ({t.category})
+            </li>
           ))}
-          {filteredTemplates.length === 0 && <li>No se encontraron plantillas.</li>}
+          {filteredTemplates.length === 0 && (
+            <li data-cy="no-templates-message" style={{ color: '#666', padding: '10px 0', textAlign: 'center' }}>
+              No se encontraron plantillas que coincidan con la búsqueda.
+            </li>
+          )}
         </ul>
       </div>
 
