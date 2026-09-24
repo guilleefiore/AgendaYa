@@ -205,13 +205,13 @@ const handleGuestEmailBlur = () => {
       <div style={{ marginTop: '20px' }}>
   <h3>Formulario de Reserva (Invitado)</h3>
   <input
-    type="email"
+    type="email" data-cy="email-input"
     placeholder="Ingresa tu correo"
     value={guestEmail}
     onChange={(e) => setGuestEmail(e.target.value)}
     onBlur={handleGuestEmailBlur}
   />
-  {guestEmailError && <span style={{ color: 'red', display: 'block' }}>Ej: usuario@dominio.com</span>}
+  {guestEmailError && <span data-cy="email-error" style={{ color: 'red', display: 'block' }}>Ej: usuario@dominio.com</span>}
   
   <button 
     data-cy="submit-booking"
