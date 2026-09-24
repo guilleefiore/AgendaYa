@@ -214,6 +214,7 @@ const handleGuestEmailBlur = () => {
   {guestEmailError && <span style={{ color: 'red', display: 'block' }}>Ej: usuario@dominio.com</span>}
   
   <button 
+    data-cy="submit-booking"
     type="submit" 
     disabled={guestEmailError || guestEmail === ''}
     style={{ marginTop: '10px' }}
