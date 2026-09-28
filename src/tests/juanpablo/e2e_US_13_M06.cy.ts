@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('AgendaYA - M06 Encolado de Notificaciones al Administrador (Juan Acre)', () => {
   beforeEach(() => {
     // Arrange: Navegar a la pantalla técnica del motor de notificaciones

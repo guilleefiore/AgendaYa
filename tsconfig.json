@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "types": ["jest", "@testing-library/jest-dom"],
+    "types": ["jest", "@testing-library/jest-dom", "cypress"],
     "plugins": [
       {
         "name": "next"
@@ -33,8 +33,6 @@
   ],
   "exclude": [
     "node_modules",
-    "cypress.config.ts",
-    "**/*.cy.ts",
-    "**/*.cy.tsx"
+    "cypress.config.ts"
   ]
 }
