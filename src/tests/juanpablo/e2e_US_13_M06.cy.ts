@@ -1,24 +1,3 @@
-<<<<<<< Updated upstream
-// Cypress E2E test for AgendaYA - M06 (Notificación al Administrador)
-// Arrange / Act / Assert pattern
-// Nota: Cypress debe estar configurado y el servidor dev corriendo en `http://localhost:3000`.
-
-describe('AgendaYA - M06 - Envío de notificación (E2E)', () => {
-  beforeEach(() => {
-    cy.visit('/');
-  });
-
-  it('Flujo happy path: completar campos y enviar notificación', () => {
-    // Arrange: verificar que la página cargó
-    cy.contains('Enviar Notificación').should('exist');
-
-    // Act: hacer click en Enviar Notificación (el componente usa valores por defecto)
-    cy.contains('button', 'Enviar Notificación').click();
-
-    // Assert: debería aparecer mensaje de éxito y conservarse en la misma ruta
-    cy.contains('Notificación enviada').should('be.visible');
-    cy.url().should('include', '/');
-=======
 describe('AgendaYA - M06 Encolado de Notificaciones al Administrador (Juan Acre)', () => {
   beforeEach(() => {
     // Arrange: Navegar a la pantalla técnica del motor de notificaciones
@@ -41,7 +20,6 @@ describe('AgendaYA - M06 Encolado de Notificaciones al Administrador (Juan Acre)
       .and('contain', '2026-06-25')
       .and('contain', '14:30')
       .and('contain', 'Dr. García');
->>>>>>> Stashed changes
   });
 
   it('Escenario 2: Prevenir encolado y alertar al usuario si el email de destino es inválido', () => {
