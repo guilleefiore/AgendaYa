@@ -7,7 +7,7 @@ import {
 
 describe('Pruebas Unitarias - US_09_M06: Editar y personalizar plantilla', () => {
 
-  // PRUEBA 1: VISTA PREVIA
+  // PRUEBA 1: VISTA PREVIA (Positiva)
   it('debe reemplazar correctamente las variables dinámicas por datos reales de ejemplo en la vista previa', () => {
     const plantilla = 'Hola [Nombre_Cliente], tu turno con [Nombre_Profesional] está confirmado para el [Fecha_Turno].';
 
@@ -16,7 +16,7 @@ describe('Pruebas Unitarias - US_09_M06: Editar y personalizar plantilla', () =>
     expect(vistaPrevia).toBe('Hola Juan, tu turno con Dra. María González está confirmado para el 25/06/2026.');
   });
 
-  //  PRUEBA 2: VALIDACIÓN DE VARIABLES INCORRECTAS
+  // PRUEBA 2: VALIDACIÓN DE VARIABLES INCORRECTAS (Negativa)
   it('debe detectar variables escritas a mano que no existen o están mal formadas', () => {
     const plantillaConErrores = 'Estimado [Nombre_Cliente], su [Nombre_Truno] ha sido agendado. Contactar a [Variable_Inexistente].';
 
@@ -27,9 +27,8 @@ describe('Pruebas Unitarias - US_09_M06: Editar y personalizar plantilla', () =>
     expect(resultadoValidacion.errores).toContain('Variable no reconocida: [Variable_Inexistente]');
   });
 
-  // PRUEBA 3: ADVERTENCIA DE LÍMITE DE CARACTERES PARA WHATSAPP 
+  // PRUEBA 3: ADVERTENCIA DE LÍMITE DE CARACTERES PARA WHATSAPP (Límite / Mixta)
   it('debe lanzar una advertencia si el texto excede los 160 caracteres en el canal WhatsApp', () => {
-    // Un texto largo de más de 160 caracteres (unificado usando template literals)
     const textoLargo = `Hola [Nombre_Cliente], te escribimos para recordarte que tu cita con [Nombre_Profesional] en la dirección [Direccion_Local]
       está programada para el [Fecha_Turno] a las [Hora_Turno]. Por favor, asiste con 15 minutos de anticipación y trae tu documento de identidad para
       agilizar el ingreso.`;
@@ -41,6 +40,25 @@ describe('Pruebas Unitarias - US_09_M06: Editar y personalizar plantilla', () =>
     const resultadoEmail = validarLimiteCanal(textoLargo, 'Email');
     expect(resultadoEmail.valido).toBe(true);
     expect(resultadoEmail.advertencia).toBeNull();
+  });
+
+  // PRUEBA 4: VALIDACIÓN DE PLANTILLA VÁLIDA SIN ERRORES (Positiva - Escenario 6)
+  it('debe validar exitosamente una plantilla cuando todas las variables ingresadas son reconocidas', () => {
+    const plantillaValida = 'Estimado/a [Nombre_Cliente], le recordamos su turno con [Nombre_Profesional] a las [Hora_Turno].';
+
+    const resultadoValidacion = validarVariablesMensaje(plantillaValida);
+
+    expect(resultadoValidacion.valido).toBe(true);
+    expect(resultadoValidacion.errores).toHaveLength(0);
+  });
+
+  // PRUEBA 5: PRESERVACIÓN DE VARIABLES NO REGISTRADAS EN VISTA PREVIA (Negativa / Caso Borde - Escenario 9)
+  it('debe mantener intacta la etiqueta de una variable no reconocida en la vista previa sin romper la cadena', () => {
+    const plantillaConVariableSinData = 'Hola [Nombre_Cliente], su código promocional es [Codigo_Inexistente].';
+
+    const vistaPrevia = generarVistaPrevia(plantillaConVariableSinData);
+
+    expect(vistaPrevia).toBe('Hola Juan, su código promocional es [Codigo_Inexistente].');
   });
 
 });
