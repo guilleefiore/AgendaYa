@@ -5,6 +5,7 @@ import { actualizarSeleccionEvento, filterDaysByDuration } from './tests/julian/
 import { validarFormatoEmailReserva } from './tests/francisco/logic';
 import { procesarReservaAutomática } from './tests/elena/reserva';
 import ProcesoReserva from './tests/juansebastian/ProcesoReserva';
+import { M06R05FPreferenciasComponent } from './M06_R05F_PreferenciasComponent';
 
 const mockEventTypes = [
   { id: '1', name: 'Consulta Corta', duration: 30 },
@@ -206,6 +207,10 @@ export default function TimezoneBooking() {
       {/* --- SECCIÓN DE JUAN SEBASTIÁN (PROCESO DE RESERVA M04) --- */}
       <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
       <ProcesoReserva />
+
+      {/* --- SECCIÓN DE JUAN SEBASTIÁN (NOTIFICACIONES M06-R05F) --- */}
+      <hr style={{ margin: '30px 0', border: '1px solid #ddd' }} />
+      <M06R05FPreferenciasComponent />
     </div>
   );
 }
