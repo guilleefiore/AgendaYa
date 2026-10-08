@@ -17,7 +17,9 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
       />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Enviar Notificación/i }));
+    fireEvent.click(
+      screen.getByRole('button', { name: /Enviar Notificación/i })
+    );
 
     await waitFor(() => {
       expect(mockSendNotification).toHaveBeenCalled();
@@ -45,11 +47,15 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
       />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Enviar Notificación/i }));
+    fireEvent.click(
+      screen.getByRole('button', { name: /Enviar Notificación/i })
+    );
 
     await waitFor(() => {
       expect(mockSendNotification).not.toHaveBeenCalled();
-      const errorMessage = screen.getByText(/Error en el envío de notificación/i);
+      const errorMessage = screen.getByText(
+        /Error en el envío de notificación/i
+      );
       expect(errorMessage).toBeInTheDocument();
       expect(errorMessage).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
@@ -65,12 +71,16 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
       />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Enviar Notificación/i }));
+    fireEvent.click(
+      screen.getByRole('button', { name: /Enviar Notificación/i })
+    );
 
     await waitFor(() => {
       expect(mockSendNotification).toHaveBeenCalled();
 
-      const errorMessage = screen.getByText(/Error en el envío de notificación/i);
+      const errorMessage = screen.getByText(
+        /Error en el envío de notificación/i
+      );
       expect(errorMessage).toBeInTheDocument();
       expect(errorMessage).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
@@ -84,7 +94,9 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
     await waitFor(() => {
       const tituloError = screen.getByText(/El título es obligatorio/i);
       const categoriaError = screen.getByText(/La categoría es obligatoria/i);
-      const descripcionError = screen.getByText(/La descripción es obligatoria/i);
+      const descripcionError = screen.getByText(
+        /La descripción es obligatoria/i
+      );
 
       expect(tituloError).toBeInTheDocument();
       expect(categoriaError).toBeInTheDocument();
@@ -114,7 +126,9 @@ describe('Juanpablo - US_13_M06 - Envío Automático de Notificación al Adminis
     fireEvent.click(evento1Btn);
 
     await waitFor(() => {
-      const continuarBtn = screen.getByRole('button', { name: /Continuar al calendario/i });
+      const continuarBtn = screen.getByRole('button', {
+        name: /Continuar al calendario/i,
+      });
       expect(continuarBtn).toBeEnabled();
       expect(evento1Btn).toHaveClass('evento-selected');
       expect(mockOnEventSelect).toHaveBeenCalledWith('e1');

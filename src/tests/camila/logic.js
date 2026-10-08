@@ -1,5 +1,9 @@
 // Función para obtener los errores del formulario de creación de plantillas
-export function obtenerErroresFormularioPlantilla({ titulo, categoria, descripcion }) {
+export function obtenerErroresFormularioPlantilla({
+  titulo,
+  categoria,
+  descripcion,
+}) {
   return {
     titulo: titulo.trim() === '',
     categoria: categoria.trim() === '',
@@ -19,14 +23,16 @@ export async function copiarTextoPlantilla(textoPlantilla) {
 
 // Función para filtrar plantillas según los filtros proporcionados
 export function filtrarPlantillas(plantillas, filtros) {
-  return plantillas.filter(plantilla => {
+  return plantillas.filter((plantilla) => {
     // Escenario 1: Coincidencia en título o descripción
-    const cumpleTexto = !filtros.texto || 
-      plantilla.titulo.toLowerCase().includes(filtros.texto.toLowerCase()) || 
+    const cumpleTexto =
+      !filtros.texto ||
+      plantilla.titulo.toLowerCase().includes(filtros.texto.toLowerCase()) ||
       plantilla.descripcion.toLowerCase().includes(filtros.texto.toLowerCase());
-      
+
     // Escenario 2: Filtros acumulativos
-    const cumpleCategoria = !filtros.categoria || plantilla.categoria === filtros.categoria;
+    const cumpleCategoria =
+      !filtros.categoria || plantilla.categoria === filtros.categoria;
     const cumpleEstado = !filtros.estado || plantilla.estado === filtros.estado;
 
     // Retorna true solo si cumple TODAS las condiciones (AND lógico)

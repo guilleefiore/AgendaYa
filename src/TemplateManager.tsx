@@ -1,227 +1,299 @@
 'use client';
 
 import { useState } from 'react';
-import { copiarTextoPlantilla, obtenerErroresFormularioPlantilla } from './tests/camila/logic';
-import { validarFormatoEmailReserva } from './tests/francisco/logic';
-import { crearDatosNotificacionAutomatica, esEmailAdministradorValido } from './tests/juanpablo/logic';
 import {
-  actualizarSeleccionEvento,
-  esEventoSeleccionado,
-  filterDaysByDuration,
+  copiarTextoPlantilla,
+  obtenerErroresFormularioPlantilla,
+} from './tests/camila/logic';
+import { validarFormatoEmailReserva } from './tests/francisco/logic';
+import {
+  crearDatosNotificacionAutomatica,
+  esEmailAdministradorValido,
+} from './tests/juanpablo/logic';
+import {
+  actualizarSeleccionEvento,
+  esEventoSeleccionado,
+  filterDaysByDuration,
 } from './tests/julian/logic';
 
 interface NotificationSettings {
-  adminEmail: string;
-  patientName: string;
-  appointmentDay: string;
-  appointmentTime: string;
-  professionalName: string;
+  adminEmail: string;
+  patientName: string;
+  appointmentDay: string;
+  appointmentTime: string;
+  professionalName: string;
 }
 
-export default function TemplateManager({ 
-  textoPlantilla = '',
-  eventos = [],
-  onEventSelect,
-  adminEmail = '',
-  onSendNotification,
-}: { 
-  textoPlantilla?: string;
-  eventos?: Array<{ id: string; name: string }>;
-  onEventSelect?: (eventId: string) => void;
-  adminEmail?: string;
-  onSendNotification?: (notification: NotificationSettings) => Promise<boolean>;
+export default function TemplateManager({
+  textoPlantilla = '',
+  eventos = [],
+  onEventSelect,
+  adminEmail = '',
+  onSendNotification,
+}: {
+  textoPlantilla?: string;
+  eventos?: Array<{ id: string; name: string }>;
+  onEventSelect?: (eventId: string) => void;
+  adminEmail?: string;
+  onSendNotification?: (notification: NotificationSettings) => Promise<boolean>;
 }) {
-  // Estados para simular el formulario (Prueba 1)
-  const [titulo, setTitulo] = useState('');
-  const [categoria, setCategoria] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [errores, setErrores] = useState({ titulo: false, categoria: false, descripcion: false });
+  // Estados para simular el formulario (Prueba 1)
+  const [titulo, setTitulo] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [errores, setErrores] = useState({
+    titulo: false,
+    categoria: false,
+    descripcion: false,
+  }); // Estados para KAN-33: Selección única de evento
 
-  // Estados para KAN-33: Selección única de evento
-  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const [continueButtonEnabled, setContinueButtonEnabled] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [continueButtonEnabled, setContinueButtonEnabled] = useState(false); // Estados para KAN-85: Notificación al administrador
 
-  // Estados para KAN-85: Notificación al administrador
-  const [notificationStatus, setNotificationStatus] = useState<string | null>(null);
-  const [durationMinutes, setDurationMinutes] = useState(60);
+  const [notificationStatus, setNotificationStatus] = useState<string | null>(
+    null
+  );
+  const [durationMinutes, setDurationMinutes] = useState(60);
 
-  const availability = [
-    { date: '2026-06-25', freeIntervals: [{ start: '09:00', end: '10:00' }] },
-    { date: '2026-06-26', freeIntervals: [{ start: '09:00', end: '09:30' }] },
-    { date: '2026-06-27', freeIntervals: [{ start: '10:00', end: '11:30' }] },
-  ];
-  const availableDays = filterDaysByDuration(availability, durationMinutes);
+  const availability = [
+    { date: '2026-06-25', freeIntervals: [{ start: '09:00', end: '10:00' }] },
+    { date: '2026-06-26', freeIntervals: [{ start: '09:00', end: '09:30' }] },
+    { date: '2026-06-27', freeIntervals: [{ start: '10:00', end: '11:30' }] },
+  ];
+  const availableDays = filterDaysByDuration(availability, durationMinutes); // Lógica para el botón Guardar (Prueba 1)
 
-  // Lógica para el botón Guardar (Prueba 1)
-  const handleGuardar = () => {
-    setErrores(obtenerErroresFormularioPlantilla({ titulo, categoria, descripcion }));
-  };
+  const handleGuardar = () => {
+    setErrores(
+      obtenerErroresFormularioPlantilla({ titulo, categoria, descripcion })
+    );
+  }; // Lógica para el botón Copiar (Pruebas 2 y 3)
 
-  // Lógica para el botón Copiar (Pruebas 2 y 3)
-  const handleCopiar = async () => {
-    await copiarTextoPlantilla(textoPlantilla);
-  };
+  const handleCopiar = async () => {
+    await copiarTextoPlantilla(textoPlantilla);
+  }; // Lógica KAN-33: Selección excluyente de evento
 
-  // Lógica KAN-33: Selección excluyente de evento
-  const handleEventSelect = (eventId: string) => {
-    const nextSelection = actualizarSeleccionEvento(eventId);
-    setSelectedEventId(nextSelection.selectedEventId);
-    setContinueButtonEnabled(nextSelection.continueButtonEnabled);
-    if (onEventSelect) {
-      onEventSelect(eventId);
-    }
-  };
+  const handleEventSelect = (eventId: string) => {
+    const nextSelection = actualizarSeleccionEvento(eventId);
+    setSelectedEventId(nextSelection.selectedEventId);
+    setContinueButtonEnabled(nextSelection.continueButtonEnabled);
+    if (onEventSelect) {
+      onEventSelect(eventId);
+    }
+  };
 
-  const [guestEmail, setGuestEmail] = useState('');
-const [guestEmailError, setGuestEmailError] = useState(false);
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestEmailError, setGuestEmailError] = useState(false);
 
-const handleGuestEmailBlur = () => {
-  if (guestEmail !== '' && !validarFormatoEmailReserva(guestEmail)) {
-    setGuestEmailError(true);
-  } else {
-    setGuestEmailError(false);
-  }
-};
+  const handleGuestEmailBlur = () => {
+    if (guestEmail !== '' && !validarFormatoEmailReserva(guestEmail)) {
+      setGuestEmailError(true);
+    } else {
+      setGuestEmailError(false);
+    }
+  }; // Lógica KAN-85: Envío de notificación
 
-  // Lógica KAN-85: Envío de notificación
-  const handleSendNotification = async (notification: NotificationSettings) => {
-    setNotificationStatus(null);
-    
-    // Validar formato de email
-    if (!esEmailAdministradorValido(notification.adminEmail)) {
-      setNotificationStatus('error');
-      return;
-    }
+  const handleSendNotification = async (notification: NotificationSettings) => {
+    setNotificationStatus(null); // Validar formato de email
+    if (!esEmailAdministradorValido(notification.adminEmail)) {
+      setNotificationStatus('error');
+      return;
+    } // Llamar al callback si existe
 
-    // Llamar al callback si existe
-    if (onSendNotification) {
-      const success = await onSendNotification(notification);
-      setNotificationStatus(success ? 'success' : 'error');
-      return;
-    }
+    if (onSendNotification) {
+      const success = await onSendNotification(notification);
+      setNotificationStatus(success ? 'success' : 'error');
+      return;
+    } // Por defecto, simular envío exitoso
 
-    // Por defecto, simular envío exitoso
-    setNotificationStatus('success');
-  };
+    setNotificationStatus('success');
+  };
 
-  return (
-    <div>
-      <div style={{ marginTop: '20px' }}>
-        <h3>Disponibilidad</h3>
-        <label htmlFor="duration-selector">Duración</label>
-        <select
-          id="duration-selector"
-          data-cy="duration-selector"
-          value={durationMinutes}
-          onChange={(event) => setDurationMinutes(Number(event.target.value))}
-        >
-          <option value="30">30 minutos</option>
-          <option value="60">60 minutos</option>
-          <option value="240">240 minutos</option>
-        </select>
-        <div data-cy="calendar">
-          {availability.map((day) => (
-            <div
-              key={day.date}
-              data-cy={`day-${day.date}`}
-              className={availableDays.includes(day.date) ? '' : 'is-disabled'}
-            >
-              {day.date}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* --- SECCIÓN PRUEBA 1: FORMULARIO --- */}
-      <div>
-        <input placeholder="Título" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
-        {errores.titulo && <span style={{ color: 'red' }}>El título es obligatorio</span>}
-      </div>
-
-      <div>
-        <input placeholder="Categoría" value={categoria} onChange={(e) => setCategoria(e.target.value)} />
-        {errores.categoria && <span style={{ color: 'red' }}>La categoría es obligatoria</span>}
-      </div>
-
-      <div>
-        <textarea placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-        {errores.descripcion && <span style={{ color: 'red' }}>La descripción es obligatoria</span>}
-      </div>
-
-      <button onClick={handleGuardar}>Guardar</button>
-
-      {/* --- SECCIÓN PRUEBAS 2 Y 3: PORTAPAPELES --- */}
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={handleCopiar}>Copiar texto</button>
-      </div>
-
-      {/* --- SECCIÓN KAN-33: SELECCIÓN ÚNICA DE EVENTO --- */}
-      <div style={{ marginTop: '20px' }}>
-        <h3>Seleccionar Evento</h3>
-        <div id="eventos-list">
-          {eventos.map((evento) => (
-            <button
-              key={evento.id}
-              onClick={() => handleEventSelect(evento.id)}
-              style={{
-                marginRight: '10px',
-                backgroundColor: esEventoSeleccionado(selectedEventId, evento.id) ? '#4CAF50' : '#f0f0f0',
-                color: esEventoSeleccionado(selectedEventId, evento.id) ? 'white' : 'black',
-              }}
-              className={esEventoSeleccionado(selectedEventId, evento.id) ? 'evento-selected' : ''}
-            >
-              {evento.name}
-            </button>
-          ))}
-        </div>
-        <button 
-          onClick={() => {}} 
-          disabled={!continueButtonEnabled}
-          style={{ marginTop: '10px' }}
-        >
-          Continuar al calendario
-        </button>
-      </div>
-
-      {/* --- SECCIÓN KAN-85: NOTIFICACIÓN AL ADMINISTRADOR --- */}
-      <div style={{ marginTop: '20px' }}>
-        <h3>Enviar Notificación</h3>
-        <input 
-          placeholder="Email del Administrador" 
-          value={adminEmail} 
-          readOnly
-          style={{ display: 'none' }}
-        />
-        <button 
-          onClick={() => handleSendNotification({
-            ...crearDatosNotificacionAutomatica(adminEmail),
-          })}
-        >
-          Enviar Notificación
-        </button>
-        {notificationStatus === 'success' && <span style={{ color: 'green', marginLeft: '10px' }}>Notificación enviada</span>}
-        {notificationStatus === 'error' && <span style={{ color: 'red', marginLeft: '10px' }}>Error en el envío de notificación</span>}
-      </div>
-      <div style={{ marginTop: '20px' }}>
-  <h3>Formulario de Reserva (Invitado)</h3>
-  <input
-    type="email" data-cy="email-input"
-    placeholder="Ingresa tu correo"
-    value={guestEmail}
-    onChange={(e) => setGuestEmail(e.target.value)}
-    onBlur={handleGuestEmailBlur}
-  />
-  {guestEmailError && <span data-cy="email-error" style={{ color: 'red', display: 'block' }}>Ej: usuario@dominio.com</span>}
-  
-  <button 
-    data-cy="submit-booking"
-    type="submit" 
-    disabled={guestEmailError || guestEmail === ''}
-    style={{ marginTop: '10px' }}
-  >
-    Confirmar reserva
-    </button>
-    </div>
-    </div>
-  );
+  return (
+    <div>
+           {' '}
+      <div style={{ marginTop: '20px' }}>
+                <h3>Disponibilidad</h3>       {' '}
+        <label htmlFor="duration-selector">Duración</label>       {' '}
+        <select
+          id="duration-selector"
+          data-cy="duration-selector"
+          value={durationMinutes}
+          onChange={(event) => setDurationMinutes(Number(event.target.value))}
+        >
+                    <option value="30">30 minutos</option>         {' '}
+          <option value="60">60 minutos</option>         {' '}
+          <option value="240">240 minutos</option>       {' '}
+        </select>
+               {' '}
+        <div data-cy="calendar">
+                   {' '}
+          {availability.map((day) => (
+            <div
+              key={day.date}
+              data-cy={`day-${day.date}`}
+              className={availableDays.includes(day.date) ? '' : 'is-disabled'}
+            >
+                            {day.date}           {' '}
+            </div>
+          ))}
+                 {' '}
+        </div>
+             {' '}
+      </div>
+            {/* --- SECCIÓN PRUEBA 1: FORMULARIO --- */}     {' '}
+      <div>
+               {' '}
+        <input
+          placeholder="Título"
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+        />
+               {' '}
+        {errores.titulo && (
+          <span style={{ color: 'red' }}>El título es obligatorio</span>
+        )}
+             {' '}
+      </div>
+           {' '}
+      <div>
+               {' '}
+        <input
+          placeholder="Categoría"
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+        />
+               {' '}
+        {errores.categoria && (
+          <span style={{ color: 'red' }}>La categoría es obligatoria</span>
+        )}
+             {' '}
+      </div>
+           {' '}
+      <div>
+               {' '}
+        <textarea
+          placeholder="Descripción"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+        />
+               {' '}
+        {errores.descripcion && (
+          <span style={{ color: 'red' }}>La descripción es obligatoria</span>
+        )}
+             {' '}
+      </div>
+            <button onClick={handleGuardar}>Guardar</button>     {' '}
+      {/* --- SECCIÓN PRUEBAS 2 Y 3: PORTAPAPELES --- */}     {' '}
+      <div style={{ marginTop: '20px' }}>
+                <button onClick={handleCopiar}>Copiar texto</button>     {' '}
+      </div>
+            {/* --- SECCIÓN KAN-33: SELECCIÓN ÚNICA DE EVENTO --- */}     {' '}
+      <div style={{ marginTop: '20px' }}>
+                <h3>Seleccionar Evento</h3>       {' '}
+        <div id="eventos-list">
+                   {' '}
+          {eventos.map((evento) => (
+            <button
+              key={evento.id}
+              onClick={() => handleEventSelect(evento.id)}
+              style={{
+                marginRight: '10px',
+                backgroundColor: esEventoSeleccionado(
+                  selectedEventId,
+                  evento.id
+                )
+                  ? '#4CAF50'
+                  : '#f0f0f0',
+                color: esEventoSeleccionado(selectedEventId, evento.id)
+                  ? 'white'
+                  : 'black',
+              }}
+              className={
+                esEventoSeleccionado(selectedEventId, evento.id)
+                  ? 'evento-selected'
+                  : ''
+              }
+            >
+                            {evento.name}           {' '}
+            </button>
+          ))}
+                 {' '}
+        </div>
+               {' '}
+        <button
+          onClick={() => {}}
+          disabled={!continueButtonEnabled}
+          style={{ marginTop: '10px' }}
+        >
+                    Continuar al calendario        {' '}
+        </button>
+             {' '}
+      </div>
+            {/* --- SECCIÓN KAN-85: NOTIFICACIÓN AL ADMINISTRADOR --- */}     {' '}
+      <div style={{ marginTop: '20px' }}>
+                <h3>Enviar Notificación</h3>       {' '}
+        <input
+          placeholder="Email del Administrador"
+          value={adminEmail}
+          readOnly
+          style={{ display: 'none' }}
+        />
+               {' '}
+        <button
+          onClick={() =>
+            handleSendNotification({
+              ...crearDatosNotificacionAutomatica(adminEmail),
+            })
+          }
+        >
+                    Enviar Notificación        {' '}
+        </button>
+               {' '}
+        {notificationStatus === 'success' && (
+          <span style={{ color: 'green', marginLeft: '10px' }}>
+            Notificación enviada
+          </span>
+        )}
+               {' '}
+        {notificationStatus === 'error' && (
+          <span style={{ color: 'red', marginLeft: '10px' }}>
+            Error en el envío de notificación
+          </span>
+        )}
+             {' '}
+      </div>
+           {' '}
+      <div style={{ marginTop: '20px' }}>
+          <h3>Formulario de Reserva (Invitado)</h3> {' '}
+        <input
+          type="email"
+          data-cy="email-input"
+          placeholder="Ingresa tu correo"
+          value={guestEmail}
+          onChange={(e) => setGuestEmail(e.target.value)}
+          onBlur={handleGuestEmailBlur}
+        />
+         {' '}
+        {guestEmailError && (
+          <span
+            data-cy="email-error"
+            style={{ color: 'red', display: 'block' }}
+          >
+            Ej: usuario@dominio.com
+          </span>
+        )}
+           {' '}
+        <button
+          data-cy="submit-booking"
+          type="submit"
+          disabled={guestEmailError || guestEmail === ''}
+          style={{ marginTop: '10px' }}
+        >
+              Confirmar reserva    {' '}
+        </button>
+           {' '}
+      </div>
+         {' '}
+    </div>
+  );
 }

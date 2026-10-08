@@ -10,7 +10,9 @@ describe('AgendaYA - M06 Búsqueda dinámica de plantillas (Agustín Aguilera)',
 
   it('Escenario 1: Filtrado reactivo por coincidencia en el título', () => {
     // Arrange: Verificar que el buscador está visible y la lista carga los dos registros iniciales
-    cy.get('[data-cy="search-template-input"]').should('be.visible').and('have.value', '');
+    cy.get('[data-cy="search-template-input"]')
+      .should('be.visible')
+      .and('have.value', '');
     cy.get('[data-cy="template-item"]').should('have.length', 2);
 
     // Act: Escribir el término de búsqueda coincidente con el título de la primera plantilla
@@ -18,7 +20,9 @@ describe('AgendaYA - M06 Búsqueda dinámica de plantillas (Agustín Aguilera)',
 
     // Assert: Verificar que la grilla filtra reactivamente y solo muestra la plantilla correspondiente
     cy.get('[data-cy="template-item"]').should('have.length', 1);
-    cy.get('[data-cy="template-item"]').first().should('contain', 'Bienvenida Standard');
+    cy.get('[data-cy="template-item"]')
+      .first()
+      .should('contain', 'Bienvenida Standard');
     cy.contains('Recordatorio 24h').should('not.exist');
     cy.get('[data-cy="no-templates-message"]').should('not.exist');
   });
@@ -32,7 +36,9 @@ describe('AgendaYA - M06 Búsqueda dinámica de plantillas (Agustín Aguilera)',
 
     // Assert: Comprobar que se filtra exclusivamente la plantilla cuya descripción contiene la palabra
     cy.get('[data-cy="template-item"]').should('have.length', 1);
-    cy.get('[data-cy="template-item"]').first().should('contain', 'Recordatorio 24h');
+    cy.get('[data-cy="template-item"]')
+      .first()
+      .should('contain', 'Recordatorio 24h');
     cy.contains('Bienvenida Standard').should('not.exist');
   });
 
@@ -47,7 +53,10 @@ describe('AgendaYA - M06 Búsqueda dinámica de plantillas (Agustín Aguilera)',
     cy.get('[data-cy="template-item"]').should('not.exist');
     cy.get('[data-cy="no-templates-message"]')
       .should('be.visible')
-      .and('contain', 'No se encontraron plantillas que coincidan con la búsqueda');
+      .and(
+        'contain',
+        'No se encontraron plantillas que coincidan con la búsqueda'
+      );
   });
 
   it('Escenario 4: Restablecer el listado completo al limpiar el campo de búsqueda', () => {

@@ -1,4 +1,4 @@
-import EmailTemplateBuilder from "../../src/EmailTemplateBuilder";
+import EmailTemplateBuilder from '../../src/EmailTemplateBuilder';
 
 export default function PlantillasPage() {
   return (

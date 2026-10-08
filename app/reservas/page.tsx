@@ -1,4 +1,4 @@
-import TimezoneBooking from "../../src/TimezoneBooking";
+import TimezoneBooking from '../../src/TimezoneBooking';
 
 export default function ReservasPage() {
   return (

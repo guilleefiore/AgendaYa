@@ -42,13 +42,13 @@ Abrir [http://localhost:3000](http://localhost:3000). El servidor debe permanece
 
 Rutas disponibles:
 
-| Ruta | Funcionalidad |
-| --- | --- |
-| `/` | Inicio y acceso a los flujos del TP. |
-| `/reservas` | Selección de evento, zona horaria, horario y confirmación de una reserva. |
-| `/plantillas` | Creación, validación y vista previa de plantillas de email. |
+| Ruta              | Funcionalidad                                                                    |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `/`               | Inicio y acceso a los flujos del TP.                                             |
+| `/reservas`       | Selección de evento, zona horaria, horario y confirmación de una reserva.        |
+| `/plantillas`     | Creación, validación y vista previa de plantillas de email.                      |
 | `/notificaciones` | Simulación de envío, reintentos, fallo definitivo e historial de notificaciones. |
-| `/test-francisco` | Pantalla aislada para el flujo E2E de validación de email. |
+| `/test-francisco` | Pantalla aislada para el flujo E2E de validación de email.                       |
 
 ## Tests unitarios con Jest
 
@@ -114,11 +114,11 @@ npm start
 
 El repositorio mantiene configuraciones separadas para impedir que los tipos globales de Jest y Cypress entren en conflicto:
 
-| Archivo | Alcance |
-| --- | --- |
-| `tsconfig.json` | Aplicación Next.js. |
+| Archivo                   | Alcance                                                |
+| ------------------------- | ------------------------------------------------------ |
+| `tsconfig.json`           | Aplicación Next.js.                                    |
 | `src/tests/tsconfig.json` | Tests unitarios de Jest y matchers de Testing Library. |
-| `tsconfig.cypress.json` | Tests E2E y globales de Cypress, como `cy`. |
+| `tsconfig.cypress.json`   | Tests E2E y globales de Cypress, como `cy`.            |
 
 Si VS Code no reconoce `describe`, `expect` o `cy` después de instalar las dependencias, ejecutar desde la paleta de comandos:
 

@@ -2,7 +2,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TemplateManager from '../../TemplateManager';
 
-
 describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', () => {
   afterEach(() => {
     jest.restoreAllMocks();
@@ -16,10 +15,13 @@ describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', ()
     fireEvent.click(btnGuardar);
 
     expect(screen.getByText(/El título es obligatorio/i)).toBeInTheDocument();
-    expect(screen.getByText(/La categoría es obligatoria/i)).toBeInTheDocument();
-    expect(screen.getByText(/La descripción es obligatoria/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/La categoría es obligatoria/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/La descripción es obligatoria/i)
+    ).toBeInTheDocument();
   });
-
 
   // Test para verificar que el copiado al portapapeles funcione correctamente y muestre confirmación
   it('debe copiar al portapapeles el texto en crudo y mostrar confirmación', async () => {
@@ -35,8 +37,12 @@ describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', ()
     fireEvent.click(screen.getByRole('button', { name: /Copiar texto/i }));
 
     await waitFor(() => {
-      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Hola [Nombre_Cliente]');
-      expect(alertMock).toHaveBeenCalledWith('Copiado en portapapeles SIN INSERCIÓN DE VARIABLES');
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+        'Hola [Nombre_Cliente]'
+      );
+      expect(alertMock).toHaveBeenCalledWith(
+        'Copiado en portapapeles SIN INSERCIÓN DE VARIABLES'
+      );
     });
   });
 
@@ -54,7 +60,9 @@ describe('Camila Bastian - US_01 y US_10 - Gestión y Copiado de Plantillas', ()
     fireEvent.click(screen.getByRole('button', { name: /Copiar texto/i }));
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith('Error. No se pudo copiar al portapapeles');
+      expect(alertMock).toHaveBeenCalledWith(
+        'Error. No se pudo copiar al portapapeles'
+      );
     });
   });
 });

@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx serve@latest out -p 3000",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "next": "^16.3.6",
@@ -27,6 +29,7 @@
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "30.4.1",
+    "prettier": "^3.9.9",
     "ts-node": "^10.9.2"
   }
 }
