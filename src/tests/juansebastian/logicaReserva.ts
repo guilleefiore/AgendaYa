@@ -13,7 +13,10 @@ export interface Slot {
 }
 
 // Validar datos personales del cliente (Evita campos vacíos y formato de correo inválido)
-export function validarDatosCliente(datos: DatosCliente): { valido: boolean; mensaje: string } {
+export function validarDatosCliente(datos: DatosCliente): {
+  valido: boolean;
+  mensaje: string;
+} {
   if (!datos.nombre || datos.nombre.trim() === '') {
     return { valido: false, mensaje: 'El nombre completo es obligatorio.' };
   }
@@ -28,12 +31,18 @@ export function validarDatosCliente(datos: DatosCliente): { valido: boolean; men
 }
 
 // Verificar disponibilidad del turno/slot seleccionado
-export function validarSlotDisponible(slot: Slot | null): { valido: boolean; mensaje: string } {
+export function validarSlotDisponible(slot: Slot | null): {
+  valido: boolean;
+  mensaje: string;
+} {
   if (!slot) {
     return { valido: false, mensaje: 'Debe seleccionar un horario.' };
   }
   if (!slot.disponible) {
-    return { valido: false, mensaje: 'Este horario ya fue reservado. Por favor elegí otro.' };
+    return {
+      valido: false,
+      mensaje: 'Este horario ya fue reservado. Por favor elegí otro.',
+    };
   }
   return { valido: true, mensaje: '' };
 }

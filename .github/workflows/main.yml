@@ -1,32 +1,104 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['develop', 'main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['develop', 'main', 'hotfix/*']
 
 jobs:
-  Ejecucion_Test:
-
+  # ==========================================
+  # NIVEL OBLIGATORIO Y DESEABLE
+  # ==========================================
+  Integracion-Continua:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Obtener-Codigo
-      uses: actions/checkout@v4
-    - name: Configurar-Node(V22)
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: 'npm'
-    - name: Instalar-Dependencias
-      run: npm ci
-    - name: Ejecutar-Lint
-      run: npm run lint
-    - name: Compilar
-      run: npm run build --if-present
-    - name: Ejecutar-Tests
-      run: npm test
+      - name: Obtener-Codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar-Node(V22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Instalar-Dependencias
+        run: npm ci
+
+      # PASO: Formateo
+      - name: Verificar-Formato
+        run: npm run format
+
+      # PASO: Linter
+      - name: Ejecutar-Lint
+        run: npm run lint
+
+      # PASO: Build
+      - name: Compilar
+        run: npm run build
+
+      # PASO: Tests Unitarios
+      - name: Ejecutar-Tests-Unitarios
+        run: npm test
+
+      # PASO: Tests E2E Cypress (Nivel Deseable)
+      - name: Ejecutar-Tests-E2E
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+          wait-on: 'http://localhost:3000'
+
+  # ==========================================
+  # NIVEL AVANZADO: Deploy a Develop
+  # ==========================================
+  Deploy-Develop:
+    needs: Integracion-Continua
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Instalar Dependencias
+        run: npm ci
+      - name: Compilar Proyecto
+        run: npm run build
+      - name: Deploy a Firebase Hosting (Desarrollo)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}'
+          projectId: 'agendaya-dev'
+          channelId: 'live'
+
+  # ==========================================
+  # NIVEL AVANZADO: Deploy a Producción
+  # ==========================================
+  Deploy-Produccion:
+    needs: Integracion-Continua
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Instalar Dependencias
+        run: npm ci
+      - name: Compilar Proyecto
+        run: npm run build
+      - name: Deploy a Firebase Hosting (Produccion)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}'
+          projectId: 'agendaya-prod'
+          channelId: 'live'

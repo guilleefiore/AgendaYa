@@ -5,16 +5,17 @@ export function determinarEstadoNotificacionAutomatica(input) {
   // Evita contadores negativos, decimales o superiores al máximo permitido.
   const reintentosNormalizados = Math.min(
     MAX_REINTENTOS_NOTIFICACION_AUTOMATICA,
-    Math.max(0, Math.floor(input.reintentosRealizados)),
+    Math.max(0, Math.floor(input.reintentosRealizados))
   );
 
   // Una notificación finalizada conserva su estado aunque se solicite procesarla nuevamente.
   if (input.estadoActual === 'enviada' || input.estadoActual === 'fallida') {
     return {
       nuevoEstado: input.estadoActual,
-      reintentosActualizados: input.estadoActual === 'fallida'
-        ? MAX_REINTENTOS_NOTIFICACION_AUTOMATICA
-        : reintentosNormalizados,
+      reintentosActualizados:
+        input.estadoActual === 'fallida'
+          ? MAX_REINTENTOS_NOTIFICACION_AUTOMATICA
+          : reintentosNormalizados,
       informacionError: input.informacionError ?? null,
     };
   }

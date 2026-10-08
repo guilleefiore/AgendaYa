@@ -22,8 +22,8 @@ export function procesarReservaAutomática(reserva: DatosReserva) {
         profesional: 'Empresa Demo',
         tipoEvento: 'Confirmación Automática',
         fechaYHora: '2026-06-25 10:00',
-        modalidad: 'Virtual con enlace'
-      }
+        modalidad: 'Virtual con enlace',
+      },
     };
   }
 
@@ -31,6 +31,6 @@ export function procesarReservaAutomática(reserva: DatosReserva) {
   return {
     estado: 'rechazado',
     mailEnviado: false,
-    detallesMail: null
+    detallesMail: null,
   };
 }

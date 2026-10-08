@@ -22,7 +22,9 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
     fireEvent.click(btnEventoA);
     expect(mockEventSelect).toHaveBeenCalledWith('evento-a');
 
-    rerender(<TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />);
+    rerender(
+      <TemplateManager eventos={eventos} onEventSelect={mockEventSelect} />
+    );
 
     const btnEventoB = screen.getByRole('button', { name: 'Evento B' });
     fireEvent.click(btnEventoB);
@@ -32,9 +34,13 @@ describe('Julian - US_02_M04 - Selección Única de Evento', () => {
   });
 
   it('debe habilitar el botón "Continuar al calendario" cuando se selecciona un evento', () => {
-    render(<TemplateManager eventos={[{ id: 'evento-a', name: 'Evento A' }]} />);
+    render(
+      <TemplateManager eventos={[{ id: 'evento-a', name: 'Evento A' }]} />
+    );
 
-    const btnContinuar = screen.getByRole('button', { name: /Continuar al calendario/i });
+    const btnContinuar = screen.getByRole('button', {
+      name: /Continuar al calendario/i,
+    });
     expect(btnContinuar).toBeDisabled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Evento A' }));

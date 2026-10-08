@@ -1,7 +1,7 @@
 /**
  * Normaliza una cadena de texto eliminando diacríticos (tildes/acentos)
  * y convirtiendo todo a minúsculas para comparaciones insensibles.
- * @param {string} texto 
+ * @param {string} texto
  * @returns {string} Texto normalizado
  */
 function normalizarTexto(texto) {
@@ -14,11 +14,15 @@ function normalizarTexto(texto) {
 
 /**
  * Sanitiza y valida la cadena de búsqueda ingresada por el usuario.
- * @param {any} terminoBusqueda 
+ * @param {any} terminoBusqueda
  * @returns {{ esValido: boolean, terminoLimpio: string }}
  */
 export function validarTerminoBusqueda(terminoBusqueda) {
-  if (terminoBusqueda === null || terminoBusqueda === undefined || typeof terminoBusqueda !== 'string') {
+  if (
+    terminoBusqueda === null ||
+    terminoBusqueda === undefined ||
+    typeof terminoBusqueda !== 'string'
+  ) {
     return {
       esValido: false,
       terminoLimpio: '',
@@ -36,7 +40,7 @@ export function validarTerminoBusqueda(terminoBusqueda) {
 /**
  * Filtra un conjunto de plantillas de forma pura por coincidencia en título o descripción.
  * Si el término es inválido o está en blanco, retorna la lista completa sin alterar los datos originales.
- * 
+ *
  * @param {Array<Object>} plantillas - Arreglo de plantillas a evaluar
  * @param {string} terminoBusqueda - Consulta ingresada por el usuario
  * @returns {Array<Object>} Arreglo con las plantillas que coinciden
@@ -61,8 +65,13 @@ export function filtrarPlantillasPorTexto(plantillas, terminoBusqueda) {
     }
 
     const titulo = normalizarTexto(plantilla.title || plantilla.titulo || '');
-    const descripcion = normalizarTexto(plantilla.description || plantilla.descripcion || '');
+    const descripcion = normalizarTexto(
+      plantilla.description || plantilla.descripcion || ''
+    );
 
-    return titulo.includes(queryNormalizado) || descripcion.includes(queryNormalizado);
+    return (
+      titulo.includes(queryNormalizado) ||
+      descripcion.includes(queryNormalizado)
+    );
   });
 }

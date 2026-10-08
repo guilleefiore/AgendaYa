@@ -8,7 +8,10 @@ describe('Guillermina - M06 - Fallos y reintentos de notificaciones', () => {
     // Arrange: crea una notificación válida y configura al proveedor para que todos los envíos fallen.
     cy.get('[data-cy="admin-email"]').type('admin@clinica.com');
     cy.get('[data-cy="enqueue-notification"]').click();
-    cy.get('[data-cy="queued-notification"]').should('contain', 'admin@clinica.com');
+    cy.get('[data-cy="queued-notification"]').should(
+      'contain',
+      'admin@clinica.com'
+    );
     cy.get('[data-cy="notification-worker"]').should('be.visible');
     cy.get('[data-cy="send-result"]').select('fallido');
 
@@ -24,13 +27,20 @@ describe('Guillermina - M06 - Fallos y reintentos de notificaciones', () => {
     cy.get('[data-cy="process-notification"]').should('be.disabled');
 
     // El historial muestra primero el intento más reciente, que debe ser el fallo definitivo.
-    cy.get('[data-cy="processing-log-entry"]').first().within(() => {
-      cy.get('[data-cy="processing-status"]').should('contain', 'FALLIDA');
-      cy.get('[data-cy="logged-retry-count"]').should('contain', '3');
-      cy.get('[data-cy="failure-detail"]').should('contain', 'Timeout API SendGrid');
-    });
+    cy.get('[data-cy="processing-log-entry"]')
+      .first()
+      .within(() => {
+        cy.get('[data-cy="processing-status"]').should('contain', 'FALLIDA');
+        cy.get('[data-cy="logged-retry-count"]').should('contain', '3');
+        cy.get('[data-cy="failure-detail"]').should(
+          'contain',
+          'Timeout API SendGrid'
+        );
+      });
 
     // Los tres registros anteriores corresponden a los reintentos automáticos previos al fallo final.
-    cy.get('[data-cy="processing-status"]').filter(':contains("REINTENTADA")').should('have.length', 3);
+    cy.get('[data-cy="processing-status"]')
+      .filter(':contains("REINTENTADA")')
+      .should('have.length', 3);
   });
 });
