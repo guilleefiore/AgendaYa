@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Firebase
+.firebase/
+
+# Cypress
+cypress/screenshots/
+cypress/videos/

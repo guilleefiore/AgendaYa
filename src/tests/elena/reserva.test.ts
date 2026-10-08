@@ -2,7 +2,6 @@ import { describe, test, expect } from '@jest/globals';
 import { procesarReservaAutomática } from './reserva';
 
 describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () => {
-  
   // Test 1: Verifica que si todo está correcto, la reserva se confirme y se envíe el mail
   test('Debería confirmar la reserva automáticamente y enviar el mail si cumple las pre-condiciones', () => {
     const datosReserva = {
@@ -10,7 +9,7 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
       confirmacionAutomatica: true,
       horarioDisponible: true,
       canceOption: true,
-      emailInvitado: 'test@usuario.com'
+      emailInvitado: 'test@usuario.com',
     };
 
     const resultado = procesarReservaAutomática(datosReserva);
@@ -27,7 +26,7 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
       confirmacionAutomatica: true,
       horarioDisponible: false, // Horario ocupado
       canceOption: true,
-      emailInvitado: 'test@usuario.com'
+      emailInvitado: 'test@usuario.com',
     };
 
     const resultado = procesarReservaAutomática(datosReserva);
@@ -43,7 +42,7 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
       confirmacionAutomatica: true,
       horarioDisponible: true,
       canceOption: false, // Cance en false provoca el rechazo
-      emailInvitado: 'test@usuario.com'
+      emailInvitado: 'test@usuario.com',
     };
 
     const resultado = procesarReservaAutomática(datosReserva);
@@ -58,7 +57,7 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
       confirmacionAutomatica: true,
       horarioDisponible: true,
       canceOption: true,
-      emailInvitado: 'test@usuario.com'
+      emailInvitado: 'test@usuario.com',
     };
 
     const resultado = procesarReservaAutomática(datosReserva);
@@ -74,7 +73,7 @@ describe('Pruebas Unitarias - Confirmación Automática de Reserva (Elena)', () 
       confirmacionAutomatica: false,
       horarioDisponible: true,
       canceOption: true,
-      emailInvitado: 'test@usuario.com'
+      emailInvitado: 'test@usuario.com',
     };
 
     const resultado = procesarReservaAutomática(datosReserva);

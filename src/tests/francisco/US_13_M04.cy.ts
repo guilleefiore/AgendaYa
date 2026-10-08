@@ -6,10 +6,9 @@
  * completamente aislado de la lógica de otros compañeros (como la selección de eventos de Julián).
  */
 describe('Francisco - US_13_M04 - Validación de correo aislada (E2E)', () => {
-
   beforeEach(() => {
     cy.visit('/test-francisco');
-    cy.wait(1000); 
+    cy.wait(1000);
     cy.get('[data-cy="email-input"]').should('exist');
   });
 
@@ -19,7 +18,9 @@ describe('Francisco - US_13_M04 - Validación de correo aislada (E2E)', () => {
     cy.get('[data-cy="email-input"]').blur();
 
     // Assert
-    cy.get('[data-cy="email-error"]').should('be.visible').and('contain', 'Ej: usuario@dominio.com');
+    cy.get('[data-cy="email-error"]')
+      .should('be.visible')
+      .and('contain', 'Ej: usuario@dominio.com');
     cy.get('[data-cy="submit-booking"]').should('be.disabled');
   });
 
@@ -32,5 +33,4 @@ describe('Francisco - US_13_M04 - Validación de correo aislada (E2E)', () => {
     cy.get('[data-cy="email-error"]').should('not.exist');
     cy.get('[data-cy="submit-booking"]').should('not.be.disabled');
   });
-
 });

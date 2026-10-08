@@ -19,7 +19,8 @@ describe('US_06_M06 / M06-R14F - Lógica de Búsqueda y Filtrado de Plantillas (
       id: 3,
       title: 'Cancelación de Turno',
       category: 'Cancelación',
-      description: 'Notificación inmediata enviada al liberarse el horario reservado',
+      description:
+        'Notificación inmediata enviada al liberarse el horario reservado',
     },
   ];
 
@@ -45,9 +46,15 @@ describe('US_06_M06 / M06-R14F - Lógica de Búsqueda y Filtrado de Plantillas (
   // Test 3: Caso borde - Insensibilidad a mayúsculas y acentos diacríticos
   it('Test 3 (Borde): debe ser insensible a mayúsculas, minúsculas y tildes', () => {
     // Búsqueda en mayúsculas sin tilde
-    const busquedaMayusculaSinTilde = filtrarPlantillasPorTexto(mockPlantillas, 'CANCELACION');
+    const busquedaMayusculaSinTilde = filtrarPlantillasPorTexto(
+      mockPlantillas,
+      'CANCELACION'
+    );
     // Búsqueda en minúsculas con tilde inversa o estándar
-    const busquedaMinusculaConTilde = filtrarPlantillasPorTexto(mockPlantillas, 'cancelación');
+    const busquedaMinusculaConTilde = filtrarPlantillasPorTexto(
+      mockPlantillas,
+      'cancelación'
+    );
 
     expect(busquedaMayusculaSinTilde).toHaveLength(1);
     expect(busquedaMayusculaSinTilde[0].id).toBe(3);
@@ -67,15 +74,33 @@ describe('US_06_M06 / M06-R14F - Lógica de Búsqueda y Filtrado de Plantillas (
   // Test 5: Caso de error / Sanitización y resiliencia de datos
   it('Test 5 (Error/Sanitización): debe sanitizar entradas inválidas o vacías y preservar la lista íntegra', () => {
     // 1. Validación aislada de la función sanitizadora
-    expect(validarTerminoBusqueda(null)).toEqual({ esValido: false, terminoLimpio: '' });
-    expect(validarTerminoBusqueda(undefined)).toEqual({ esValido: false, terminoLimpio: '' });
-    expect(validarTerminoBusqueda('   ')).toEqual({ esValido: false, terminoLimpio: '' });
-    expect(validarTerminoBusqueda('  Turno  ')).toEqual({ esValido: true, terminoLimpio: 'Turno' });
+    expect(validarTerminoBusqueda(null)).toEqual({
+      esValido: false,
+      terminoLimpio: '',
+    });
+    expect(validarTerminoBusqueda(undefined)).toEqual({
+      esValido: false,
+      terminoLimpio: '',
+    });
+    expect(validarTerminoBusqueda('   ')).toEqual({
+      esValido: false,
+      terminoLimpio: '',
+    });
+    expect(validarTerminoBusqueda('  Turno  ')).toEqual({
+      esValido: true,
+      terminoLimpio: 'Turno',
+    });
 
     // 2. Comportamiento seguro de filtrado ante valores no válidos
     const resEspacios = filtrarPlantillasPorTexto(mockPlantillas, '    ');
-    const resNull = filtrarPlantillasPorTexto(mockPlantillas, null as unknown as string);
-    const resUndefined = filtrarPlantillasPorTexto(mockPlantillas, undefined as unknown as string);
+    const resNull = filtrarPlantillasPorTexto(
+      mockPlantillas,
+      null as unknown as string
+    );
+    const resUndefined = filtrarPlantillasPorTexto(
+      mockPlantillas,
+      undefined as unknown as string
+    );
 
     // No debe colapsar y debe devolver el conjunto original de plantillas
     expect(resEspacios).toHaveLength(3);

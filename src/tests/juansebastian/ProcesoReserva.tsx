@@ -2,7 +2,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { validarDatosCliente, validarSlotDisponible, Slot, DatosCliente } from './logicaReserva';
+import {
+  validarDatosCliente,
+  validarSlotDisponible,
+  Slot,
+  DatosCliente,
+} from './logicaReserva';
 
 export default function ProcesoReserva() {
   // Estado para controlar el flujo mobile de 4 pasos (M04-R02NF)
@@ -10,8 +15,12 @@ export default function ProcesoReserva() {
   const [eventoSeleccionado, setEventoSeleccionado] = useState<string>('');
   const [fechaSeleccionada, setFechaSeleccionada] = useState<string>('');
   const [slotSeleccionado, setSlotSeleccionado] = useState<Slot | null>(null);
-  
-  const [cliente, setCliente] = useState<DatosCliente>({ nombre: '', email: '', telefono: '' });
+
+  const [cliente, setCliente] = useState<DatosCliente>({
+    nombre: '',
+    email: '',
+    telefono: '',
+  });
   const [errorMensaje, setErrorMensaje] = useState<string>('');
 
   // Horarios de prueba (incluye uno ocupado/no disponible para testear errores)
@@ -54,13 +63,36 @@ export default function ProcesoReserva() {
   };
 
   return (
-    <div style={{ maxWidth: '450px', margin: '40px auto', padding: '20px', fontFamily: 'sans-serif', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2 data-cy="titulo-modulo" style={{ textAlign: 'center' }}>AgendaYA - Reserva de Turno</h2>
-      <p data-cy="indicador-paso" style={{ fontWeight: 'bold', color: '#555' }}>Paso {paso} de 4</p>
+    <div
+      style={{
+        maxWidth: '450px',
+        margin: '40px auto',
+        padding: '20px',
+        fontFamily: 'sans-serif',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+      }}
+    >
+      <h2 data-cy="titulo-modulo" style={{ textAlign: 'center' }}>
+        AgendaYA - Reserva de Turno
+      </h2>
+      <p data-cy="indicador-paso" style={{ fontWeight: 'bold', color: '#555' }}>
+        Paso {paso} de 4
+      </p>
 
       {/* Cartel de Error Global */}
       {errorMensaje && (
-        <div data-cy="error-message" style={{ color: 'red', backgroundColor: '#ffe6e6', padding: '10px', borderRadius: '4px', marginBottom: '15px', fontWeight: 'bold' }}>
+        <div
+          data-cy="error-message"
+          style={{
+            color: 'red',
+            backgroundColor: '#ffe6e6',
+            padding: '10px',
+            borderRadius: '4px',
+            marginBottom: '15px',
+            fontWeight: 'bold',
+          }}
+        >
           {errorMensaje}
         </div>
       )}
@@ -72,14 +104,25 @@ export default function ProcesoReserva() {
           <button
             data-cy="event-card-consulta"
             onClick={() => seleccionarEvento('Consulta Inicial (30 min)')}
-            style={{ display: 'block', width: '100%', padding: '12px', marginBottom: '10px', cursor: 'pointer' }}
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '12px',
+              marginBottom: '10px',
+              cursor: 'pointer',
+            }}
           >
             Consulta Inicial (30 min)
           </button>
           <button
             data-cy="event-card-seguimiento"
             onClick={() => seleccionarEvento('Reunión de Seguimiento (1h)')}
-            style={{ display: 'block', width: '100%', padding: '12px', cursor: 'pointer' }}
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '12px',
+              cursor: 'pointer',
+            }}
           >
             Reunión de Seguimiento (1h)
           </button>
@@ -115,9 +158,10 @@ export default function ProcesoReserva() {
                 width: '100%',
                 padding: '10px',
                 marginBottom: '8px',
-                backgroundColor: slotSeleccionado?.id === s.id ? '#cce5ff' : '#f8f9fa',
+                backgroundColor:
+                  slotSeleccionado?.id === s.id ? '#cce5ff' : '#f8f9fa',
                 border: s.disponible ? '1px solid #ccc' : '1px red dashed',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               {s.hora} {!s.disponible && '(Ocupado)'}
@@ -127,7 +171,16 @@ export default function ProcesoReserva() {
           <button
             data-cy="btn-siguiente-paso2"
             onClick={confirmarFechaYHora}
-            style={{ width: '100%', padding: '12px', marginTop: '15px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginTop: '15px',
+              backgroundColor: '#007bff',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
           >
             Siguiente
           </button>
@@ -144,7 +197,9 @@ export default function ProcesoReserva() {
               type="text"
               data-cy="name-input"
               value={cliente.nombre}
-              onChange={(e) => setCliente({ ...cliente, nombre: e.target.value })}
+              onChange={(e) =>
+                setCliente({ ...cliente, nombre: e.target.value })
+              }
               style={{ width: '100%', padding: '8px', marginTop: '4px' }}
             />
           </div>
@@ -154,7 +209,9 @@ export default function ProcesoReserva() {
               type="text"
               data-cy="email-input"
               value={cliente.email}
-              onChange={(e) => setCliente({ ...cliente, email: e.target.value })}
+              onChange={(e) =>
+                setCliente({ ...cliente, email: e.target.value })
+              }
               style={{ width: '100%', padding: '8px', marginTop: '4px' }}
             />
           </div>
@@ -164,14 +221,24 @@ export default function ProcesoReserva() {
               type="text"
               data-cy="phone-input"
               value={cliente.telefono}
-              onChange={(e) => setCliente({ ...cliente, telefono: e.target.value })}
+              onChange={(e) =>
+                setCliente({ ...cliente, telefono: e.target.value })
+              }
               style={{ width: '100%', padding: '8px', marginTop: '4px' }}
             />
           </div>
           <button
             type="submit"
             data-cy="submit-booking"
-            style={{ width: '100%', padding: '12px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: '#28a745',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
           >
             Confirmar Reserva
           </button>
@@ -180,11 +247,28 @@ export default function ProcesoReserva() {
 
       {/* PASO 4: Confirmación Final Exitosa */}
       {paso === 4 && (
-        <div data-cy="booking-confirmation" style={{ textAlign: 'center', padding: '20px', backgroundColor: '#e6ffe6', borderRadius: '4px', border: '1px solid green' }}>
+        <div
+          data-cy="booking-confirmation"
+          style={{
+            textAlign: 'center',
+            padding: '20px',
+            backgroundColor: '#e6ffe6',
+            borderRadius: '4px',
+            border: '1px solid green',
+          }}
+        >
           <h3 style={{ color: 'green' }}>¡Reserva Confirmada!</h3>
-          <p>Tu turno para <strong>{eventoSeleccionado}</strong> quedó registrado con éxito.</p>
-          <p>Fecha: {fechaSeleccionada} - {slotSeleccionado?.hora}</p>
-          <p>Enviamos un email de confirmación a: <strong>{cliente.email}</strong></p>
+          <p>
+            Tu turno para <strong>{eventoSeleccionado}</strong> quedó registrado
+            con éxito.
+          </p>
+          <p>
+            Fecha: {fechaSeleccionada} - {slotSeleccionado?.hora}
+          </p>
+          <p>
+            Enviamos un email de confirmación a:{' '}
+            <strong>{cliente.email}</strong>
+          </p>
         </div>
       )}
     </div>
