@@ -23,7 +23,7 @@ export default function NotificacionesPage() {
     }
     const datos = crearDatosNotificacionAutomatica(adminEmail);
     setReintentos(0);
- //   setEstadoNotificacion('pendiente');
+    // setEstadoNotificacion('pendiente');
     setLog([]);
     setDatosSimulados(datos);
   };
@@ -56,7 +56,7 @@ export default function NotificacionesPage() {
 
   const handleReset = () => {
     setReintentos(0);
-//    setEstadoNotificacion('pendiente');
+    setEstadoNotificacion('pendiente');
     setLog([]);
     setDatosSimulados(null);
   }
