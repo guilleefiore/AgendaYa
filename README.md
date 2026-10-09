@@ -144,15 +144,19 @@ AgendaYa/
 └── README.md
 ```
 
-## Estado verificado
+## Estado del proyecto
 
-Última verificación local: **24 de septiembre de 2026**.
+Inventario estático del código: **9 de octubre de 2026**. En esta actualización
+se contaron los casos declarados en los archivos de prueba; no se ejecutaron las
+suites.
 
-- 11 suites y 44 tests unitarios aprobados.
-- 7 archivos E2E y 10 tests de Cypress aprobados en Chrome.
-- TypeScript aprobado para la aplicación, Jest y Cypress.
-- ESLint aprobado.
-- Build de producción generado correctamente.
+- 13 archivos de Jest (`*.test.ts` y `*.test.tsx`), con 51 casos declarados.
+- 10 archivos E2E de Cypress, con 17 casos declarados.
+- La última ejecución documentada en este README fue el **24 de septiembre de
+  2026**: entonces se registraron 11 suites y 44 tests unitarios, 7 archivos E2E
+  y 10 tests de Cypress aprobados en Chrome, además de TypeScript, ESLint y el
+  build de producción aprobados. Esos resultados corresponden a esa fecha y no
+  verifican los cambios posteriores.
 
 ## Evidencia de la entrega
 
